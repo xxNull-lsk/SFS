@@ -34,9 +34,10 @@ typedef struct _SFS_DEV{
 struct _SFS_FILE_CONTEXT;
 typedef struct _SFS_CONTEXT
 {
-    SFS_SUPER_BLOCK superBlock;
-    PSFS_DEV pDev;
-    struct _SFS_FILE_CONTEXT* pFile;
+    SFS_SUPER_BLOCK            superBlock;
+    PSFS_DEV                   pDev;
+    PUINT8                     pBuf4RWBytes;
+    struct _SFS_FILE_CONTEXT*  pFile;
 }SFS_CONTEXT, * PSFS_CONTEXT;
 
 #define SFS_FILE_MODE_READ      0x01
@@ -44,7 +45,7 @@ typedef struct _SFS_CONTEXT
 typedef struct _SFS_FILE_CONTEXT
 {
     PSFS_CONTEXT    pFs;
-    UINT64           nCurrPos;
+    UINT64          nCurrOffset;
 }SFS_FILE_CONTEXT, * PSFS_FILE_CONTEXT;
 
 SFS_DATE_TIME SfsGetCurrDateTime();
@@ -60,10 +61,12 @@ typedef enum _SFS_WENCE
     SFS_SEEK_END = 2
 }SFS_WENCE;
 
-SFS_ERROR SfsFileOpen(IN PSFS_CONTEXT* ppContext, OUT PSFS_FILE_CONTEXT * ppFile);
+SFS_ERROR SfsFileOpen(IN PSFS_CONTEXT pFs, OUT PSFS_FILE_CONTEXT * ppFile);
 SFS_ERROR SfsFileClose(IN PSFS_FILE_CONTEXT * ppFile);
-SFS_ERROR SfsFileRead(IN PSFS_FILE_CONTEXT * pFile, void * buf, UINT32 nBytes);
-SFS_ERROR SfsFileWrite(IN PSFS_FILE_CONTEXT * pFile, const void * buf, UINT32 nBytes);
-UINT64 SfsFileSeek(IN PSFS_FILE_CONTEXT * pFile, UINT64 offset, SFS_WENCE whence);
+SFS_ERROR SfsFileRead(IN PSFS_FILE_CONTEXT pFile, void * buf, UINT32 nBytes);
+SFS_ERROR SfsFileWrite(IN PSFS_FILE_CONTEXT pFile, const void * buf, UINT32 nBytes);
+UINT64 SfsFileSeek(IN PSFS_FILE_CONTEXT pFile, UINT64 offset, SFS_WENCE whence);
+SFS_ERROR SfsFileSetFileSize(IN PSFS_FILE_CONTEXT pFile, UINT64 nSize);
 
+SFS_ERROR SfsRWBytes(IN PSFS_CONTEXT pFs, IN UINT64 nOffset, IN OUT void * buf, IN UINT32 nBytes, IN UINT8 bIsRead);
 #endif // _SFS_H_
