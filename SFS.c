@@ -73,11 +73,6 @@ SFS_ERROR SfsMount(IN PSFS_DEV pDev, OUT PSFS_CONTEXT* ppContext)
         return SFS_ERR_INVALID_PARAM;
     }
     *ppContext = NULL;
-    if (pDev->GetSectorSize(pDev) != pContext->superBlock.nSectorBytes)
-    {
-        pDev->Log(pDev, __FILE__, __LINE__, SFS_LOG_ERROR, SFS_ERR_NOT_SUPPORT, "Mount failed!");
-        return SFS_ERR_NOT_SUPPORT;
-    }
     pContext = (PSFS_CONTEXT)malloc(sizeof(SFS_CONTEXT));
     if (!pContext)
     {
@@ -85,7 +80,7 @@ SFS_ERROR SfsMount(IN PSFS_DEV pDev, OUT PSFS_CONTEXT* ppContext)
         return SFS_ERR_OUT_OF_MEMORY;
     }
     memset(pContext, 0, sizeof(SFS_CONTEXT));
-    pContext->pDev = pDev;	
+    pContext->pDev = pDev;
     pContext->superBlock.nSectorBytes = pDev->GetSectorSize(pDev);
 	err = SfsRWBytes(pContext, 0, &pContext->superBlock, sizeof(pContext->superBlock), TRUE);
     if (err != SFS_OK)

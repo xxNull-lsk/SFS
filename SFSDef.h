@@ -3,7 +3,7 @@
 
 typedef unsigned char       UINT8;
 typedef UINT8 * PUINT8;
-typedef unsigned short      UINT86;
+typedef unsigned short      UINT16;
 typedef unsigned int        UINT32;
 typedef unsigned long long  UINT64;
 
@@ -24,6 +24,8 @@ typedef int SFS_ERROR;
 #define SFS_ERR_ALREADY_OPENED      8
 #define SFS_ERR_INVALID_OFFSET      9
 #define SFS_ERR_INVALID_LEN        10
+#define SFS_ERR_WRITE_SECTOR       11
+#define SFS_ERR_READ_SECTOR        12
 
 #define IN
 #define OUT
@@ -61,7 +63,7 @@ typedef struct
     SFS_DATE_TIME dtFileLastAccessTime;  // 160 文件的最后修改时间
     SFS_DATE_TIME dtFileLastModfiyTime;  // 168 文件的最后修改时间
     UINT8 nUnused2[510 - 176];           // 176
-    UINT86 nPartSign;                    // 510 0x55aa
+    UINT16 nPartSign;                    // 510 0x55aa
 }SFS_SUPER_BLOCK, * PSFS_SUPER_BLOCK;
 
 #endif // _SFS_DEF_H_

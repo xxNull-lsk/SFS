@@ -19,7 +19,7 @@ typedef SFS_ERROR (* PFN_ReadSector)(struct _SFS_DEV * pDev, UINT64 nOffset, voi
 typedef SFS_ERROR (* PFN_Flush)(struct _SFS_DEV * pDev);
 typedef UINT64 (* PFN_GetSectorCount)(struct _SFS_DEV * pDev);
 typedef UINT32 (* PFN_GetSectorSize)(struct _SFS_DEV * pDev);
-typedef UINT32 (* PFN_Log)(struct _SFS_DEV * pDev, const char * lpszFileName, UINT32 nLineNO, SFS_LOG nType, SFS_ERROR err, const char * lpszFormat, ...);
+typedef void (* PFN_Log)(struct _SFS_DEV * pDev, const char * lpszFileName, UINT32 nLineNO, SFS_LOG nType, SFS_ERROR err, const char * lpszFormat, ...);
 
 typedef struct _SFS_DEV{
     PFN_GetSectorCount      GetSectorCount;
